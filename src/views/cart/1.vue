@@ -1,6 +1,6 @@
 <template>
   <div>
-      详情组件
+      修改数据
   </div>
 </template>
 
