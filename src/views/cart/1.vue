@@ -1,6 +1,6 @@
 <template>
   <div>
-      yyy
+      详情组件
   </div>
 </template>
 
