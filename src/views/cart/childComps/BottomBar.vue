@@ -16,7 +16,7 @@ import CheckButtom from './CheckButtom'
       CheckButtom
     },
     computed:{
-      // 就能拿到state中cartList
+      // 就能拿到getters中cartList
       ...mapGetters(['cartList']),
       // 合计
       totalPrice(){
@@ -30,7 +30,7 @@ import CheckButtom from './CheckButtom'
 
 
       checkLength(){
-        // 选中的长度，选中有几个，就可以直接通过this.cartList拿到state中cartList
+        // 选中的长度，选中有几个，就计算几个，就可以直接通过this.cartList拿到state中cartList
         return this.cartList.filter(item => item.checked).length
       },
       // 全选的判断

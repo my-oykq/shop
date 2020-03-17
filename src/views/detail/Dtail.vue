@@ -63,9 +63,10 @@ import { mapActions } from 'vuex'
         paramInfo:{},//参数详情
         commentInfo:{},//用户评论信息
         recommend:[],//热门推荐信息
+        // 联动效果需要考虑这两个
+        titleTopYs:[],//A.DetailNavBar组件点击滚动相应的内容
+        getTitleTopYs:null,//定一个函数，便于在加载图片中调用
 
-        titleTopYs:[],//DetailNavBar组件点击滚动相应的内容
-        getTitleTopYs:null,
         currentIndex:0,// 记录滚动内容显示对应标题的index
         isShowTop:false,//小箭头的显示与隐藏，默认是false
         // message:'', //Toast传递参数
@@ -126,10 +127,11 @@ import { mapActions } from 'vuex'
           this.recommend = data.list
 
         })
-        //给getTitleTopYs这个函数赋值,获取子组件的offsettop的高度 /防抖,将拿到的offsetTop添加到titleTopYs数组中
+        // C、给getTitleTopYs这个函数赋值,获取子组件的offsettop的高度 /防抖,将拿到的offsetTop添加到titleTopYs数组中
         this.getTitleTopYs = debounce(()=>{
             this.titleTopYs = []
             this.titleTopYs.push(0)
+            // 通过$el拿到对应元素的offsetTop
             this.titleTopYs.push(this.$refs.param.$el.offsetTop-44)//参数
             this.titleTopYs.push(this.$refs.comment.$el.offsetTop-44)//评论
             this.titleTopYs.push(this.$refs.recommend.$el.offsetTop-44)//推荐
@@ -140,18 +142,17 @@ import { mapActions } from 'vuex'
 
 
     },
-    mounted () {
-
-    },
+    mounted () {},
     methods: {
       ...mapActions(['addCart']),
       // 1.监听图片的加载
       itemImageLoad(){
         // 刷新
           this.$refs.scroll.refresh()
+          // D
           this.getTitleTopYs()
       },
-      // 2.点击滚动到相应的内容
+      // 2. B、点击滚动到相应的内容
       titleClick(index){
         // console.log(index),titleTopYs[商品，参数，评价，推荐]，，，用index代表他们，点击滚动的位置
         this.$refs.scroll.scrollTo(0,-this.titleTopYs[index],200)
@@ -160,8 +161,24 @@ import { mapActions } from 'vuex'
       contentScroll(position){
         // 1.获取Y值
         const positionY = -position.y
+        // 方案二
+        // 2.positionY和主题中的值进行比较,先通过遍历拿到所有的titleTopYs['商品','参数','评价','推荐']=====[0,1,2,3]
+        // 拿到titleTopYs的长度
+        let length = this.titleTopYs.length
+        // 遍历
+        for(let i= 0; i<length-1;i++){
+          // 如果当前的index ！= i（每一个titleTopYs）或者y大于等于titleTopYs[i]的y 或者 y 小于titleTopYs[i+1](第二个索引)
+          if(this.currentIndex !==i && (positionY >= this.titleTopYs[i] && positionY < this.titleTopYs[i+1])){
+            // 把i赋值于当前的currentIndex
+            this.currentIndex = i
+            // 并且让DetailNavBar中的currentIndex与（每一个页面）当前的currentIndex相等
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+        }
+        //3.是否显示小箭头回到顶部,y轴 > 1000就显示小箭头
+        this.isShowTop = -position.y > 1000
 
-        // [0,7983,9120,9452]
+         // [0,7983,9120,9452]
         // positionY在0-7983这个范围是index=0
         // positionY在7983-9120这个范围是index=1
         // positionY在9120-9452这个范围是index=2
@@ -178,22 +195,6 @@ import { mapActions } from 'vuex'
         //     this.$refs.nav.currentIndex = this.currentIndex
         //   }
         // }---------方案一
-
-        // 方案二
-        // 2.positionY和主题中的值进行比较,先通过遍历拿到所有的titleTopYs['商品','参数','评价','推荐']=====[0,1,2,3]
-        let length = this.titleTopYs.length
-        for(let i= 0; i<length-1;i++){
-          // 如果当前的index ！= i（每一个titleTopYs）或者y大于等于titleTopYs[i]的y 或者 y 小于titleTopYs[i+1](第二个索引)
-          if(this.currentIndex !==i && (positionY >= this.titleTopYs[i] && positionY < this.titleTopYs[i+1])){
-            // 把i赋值于当前的currentIndex
-            this.currentIndex = i
-            // 并且让DetailNavBar中的currentIndex与（每一个页面）当前的currentIndex相等
-            this.$refs.nav.currentIndex = this.currentIndex
-          }
-        }
-
-        //3.是否显示小箭头回到顶部,y轴 > 1000就显示小箭头
-        this.isShowTop = -position.y > 1000
       },
 
       // 4.点击小箭头回到顶部，初始位置

@@ -1,6 +1,6 @@
 <template>
-  <div id="right-bar">
-    右边组件
+  <div class="line">
+    <span>已经到底了哦~~~~~</span>
   </div>
 </template>
 
@@ -10,6 +10,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  #right-bar
-    padding 0 30px
+  .line
+    text-align center
+    font-size 14px
+    margin-top 5px
 </style>

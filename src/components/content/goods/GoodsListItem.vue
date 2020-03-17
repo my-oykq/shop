@@ -33,7 +33,7 @@
    computed:{
     //  判断图片的显示，如果有image就显示image，否则显示img图片
      showImage(){
-       return this.goodsItem.image || this.goodsItem.show.img
+       return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
      }
    }
   }

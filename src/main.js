@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vant from 'vant'
+import 'babel-polyfill'
 import 'vant/lib/index.css';
 import ElementUI from 'element-ui'
 import FastClick from 'fastclick'
