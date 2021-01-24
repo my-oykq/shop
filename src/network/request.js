@@ -7,7 +7,7 @@ import axios from 'axios'
 export function request(config){
   // 创建axios实例
   const instence = axios.create({
-    baseURL: 'http://123.207.32.32:8000/api/wh' || 'http://106.54.54.237:8000/api/wh',
+    baseURL: 'http://123.207.32.32:8000/api/h8',
     timeout:5000
   })
 
@@ -20,6 +20,8 @@ export function request(config){
 
   // 2.响应拦截
   instence.interceptors.response.use(res =>{
+    console.log(res)
+
     return res
   }, err=>{
     console.log(err)

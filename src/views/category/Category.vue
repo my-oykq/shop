@@ -52,8 +52,8 @@ import {
         titleList:['流行', '新款', '精选'],
         categoryList:[],//左边数据
         // 右侧分类数据
-        subcategoryList:[],
-        categoryDetailList:[],
+        subcategoryList:[],//右侧top数据
+        categoryDetailList:[],//右侧center中数据
         currentIndex:0,
         isShowTop:false,
         keyList:[]
@@ -65,7 +65,7 @@ import {
 
     },
     watch: {
-      categoryList(key){
+      categoryList(){
         this.$nextTick(()=>{
             // 1-1.读取参数协助右侧top请求对应的数据
             this._getSubcategory(this.categoryList[0].maitKey,0)
@@ -76,7 +76,7 @@ import {
 
         // 左边数据
         _getCategory(){
-          // （2）
+          // 左边请求的数据（2）
             getCategory().then((res) =>{
             // console.log(res)
             const data = res.data.data
@@ -86,7 +86,7 @@ import {
             // dom渲染之后读取数据
           //渲染数据后读取左侧数据
           this.$nextTick(() => {
-            // 读取参数协助右侧top请求对应的数据
+            // 点击左侧读取参数协助显示右侧top请求对应的数据
             this._getSubcategory(this.categoryList[0].maitKey, 0);
             this._getcategoryDeta(this.categoryList[0].miniWallkey,'pop')
             // 初始化push第一个key进去
@@ -96,14 +96,17 @@ import {
         },
         //请求左侧对应的右侧top请求数据(3)
       _getSubcategory(key, index) {
+
         getSubcategory(key).then(res => {
           // console.log(this.subcategoryList);
           const data = res.data.data
+          // 拿到数据保存到data中
           this.subcategoryList[index] = data.list;
           //请求到数据，隐藏loading
           // this.isShowLoading = false;
         });
       },
+      // 4.左侧对应右侧buttom数据
         _getcategoryDeta(miniWallkey,type){
           // 请求左侧对应的右侧中间数据展示(4)
           getcategoryDeta(miniWallkey,type).then(res =>{
@@ -117,22 +120,26 @@ import {
         const typeList = ['pop', 'new', 'sell']
         this._getcategoryDeta(this.categoryList[this.currentIndex].miniWallkey,typeList[index])
       },
+
       // 事件,监听左侧点击(6),结构赋值，拿到tab-menu商品信息obj
       itemClick({ maitKey, index }){
-        // 6-1,根据index动态切换右侧top动态效果
+        // 6-1,根据index动态切换右侧top动态效果，让index与当前点击的currentIndex保持一致
         this.currentIndex = index
-        // 6-2,每次切换分类初始化tab-control的下标
+        // 6-3,每次切换分类初始化tab-control的下标
         this.$refs.tabControl.currentIndex = 0
-        // 6-3请求对应的推荐商品列表-调用右侧请求到的数据，根据左侧的categoryList的currentIndex拿到商品的miniWallkey，type='pop'
+        // 6-2请求对应的推荐商品列表-调用右侧请求到的数据，根据左侧的categoryList的currentIndex拿到商品的miniWallkey，type='pop'
         this._getcategoryDeta(this.categoryList[this.currentIndex].miniWallkey,'pop')
+        // 6-4点击存储左侧点击的maitKey值
+        this.keyList[index] = maitKey
+
       },
-      // 6-4点击小箭头
+      // 7.点击小箭头
       backClick(){
         this.$refs.scroll.scrollTo(0,0)
       },
-      //6-5 给scroll绑定监听位置
+      //8.给scroll绑定监听位置
       scroll(position){
-        // 6-5-1，滚动到大于 1000就显示小箭头
+        // 8-1，滚动到大于 1000就显示小箭头
         this.isShowTop = -(position.y) >1000
       }
     }

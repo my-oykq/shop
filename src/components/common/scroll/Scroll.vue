@@ -22,7 +22,7 @@ import BScroll from 'better-scroll'
         type:Number,
         default:0
       },
-      // 上拉加载更多
+      // a上拉加载更多
       pullUpLoad:{
         type:Boolean,
         default:true
@@ -35,7 +35,7 @@ import BScroll from 'better-scroll'
           click:true,
           // 实时监听
           probeType:this.probeType,
-          // 动态的上拉加载
+          //a-1 动态的上拉加载
           pullUpLoad:this.pullUpLoad
       })
       // 2.监听滚动的位置--来使小箭头处于显示和隐藏
@@ -43,7 +43,7 @@ import BScroll from 'better-scroll'
         // 这里不需要实时用position，哪个组件想用通过自定义事件把position传到父组件Home
         this.$emit('scroll',position)
       })
-      // 监听上拉加载
+      //a-2 监听上拉加载
      this.scroll.on('pullingUp',()=>{
       //  在这个组件无需做上拉加载更多
        this.$emit('pullingUp')

@@ -1,4 +1,5 @@
 <template>
+<!-- 正在流行那一块的数据 -->
   <div class="category-detail">
     <div :key="index" class="category-detail-item" v-for="(item, index) in CategoryList">
       <a :href="item.link"><img :src="item.image" alt="" /></a>

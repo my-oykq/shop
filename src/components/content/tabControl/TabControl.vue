@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   export default {
     name:"TabControl",
@@ -47,7 +46,7 @@
   .tab-control {
   line-height: 40px;
   display: flex;
-
+  background #ffffff;
   justify-content: space-between;
   height: 40px;
   text-align: center;

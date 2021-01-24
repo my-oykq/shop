@@ -1,5 +1,6 @@
 <template>
   <div class="tab-menu">
+    <!-- 左侧导航 -->
     <scroll class="content">
       <div class="menu-list-item"
         v-for="(category, index) in slideBarList" :key="index"
@@ -30,6 +31,7 @@ import Scroll from 'common/scroll/Scroll'
       }
     },
     methods: {
+
       // 把左侧item的信息maitKey传过去，index代表每个item下标
       // 将点击的数据存在临时对象中，并发送给父组件
       indexClick(category,index){

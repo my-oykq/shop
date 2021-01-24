@@ -7,7 +7,7 @@
           @tabClick="tabClick"
           ref="topControl"
           class="fixed" v-show="tabFixed"/>
-    <!-- ref目的是能拿到Scroll组件里的scrollTo方法 -->
+    <!-- ref目的是能拿到Scroll组件里的scrollTo方法 a-3 :pul-up-loade="true",上垃加载-->
     <scroll class="content"
             ref="scroll"
             :probe-type="3" @scroll="contentScroll"
@@ -137,13 +137,15 @@ import { getHomeMulidata, getHomeGoods } from 'network/home'
       },
       // 2.接收Scroll组件传过来自定义事件，positon
       contentScroll(position){
+        // console.log(position)
         // 1.判断BackTop是否显示
          this.isShowTop = (-position.y) > 1000
 
         //  2.决定tabControl是否吸顶(position:fixed)
         this.tabFixed = (-position.y) > this.tabOffsetTop
       },
-      // 上拉加载更多,针对类型来加载更多
+
+      //a-4 上拉加载更多,针对类型来加载更多
       loadMore(){
         // 1.
         this.getGoods(this.currentType)
@@ -173,13 +175,13 @@ import { getHomeMulidata, getHomeGoods } from 'network/home'
         // page也是动态的page
           const page = this.goods[type].page + 1
           getHomeGoods(type,page).then(res =>{
-            console.log(res)
+            // console.log(res)
           // 拿到数据并且保存下来添加到另一个空数组
           this.goods[type].list.push(...res.data.data.list)
           // 重置page
           this.goods[type].page +=1
 
-          // 当上拉加载数据加载完毕后，需要调用此方法告诉 better-scroll 数据已加载。
+          // a-5 调用这个方法才能完成下一次数据，当上拉加载数据加载完毕后，需要调用此方法告诉 better-scroll 数据已加载。
           this.$refs.scroll.finishPullUp()
         })
       }
@@ -199,7 +201,6 @@ import { getHomeMulidata, getHomeGoods } from 'network/home'
   .fixed
     position relative
     z-index 9
-
   .content
     overflow hidden
     position absolute

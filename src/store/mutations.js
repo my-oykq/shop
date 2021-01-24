@@ -17,6 +17,7 @@ export default {
      [ADD_TOCART](state,payload){
       //  添加属性---想product商品添加属性
         payload.checked = true
+        console.log(payload)
         state.cartList.push(payload)
-      }
+     }
 }

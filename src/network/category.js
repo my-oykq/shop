@@ -11,7 +11,7 @@ export function getCategory(){
     url:'/category'
   })
 }
-// 右边数据请求
+// 右边数据请求top数据
 export function getSubcategory(maitKey){
   return request({
     url: '/subcategory',
@@ -20,6 +20,7 @@ export function getSubcategory(maitKey){
     }
   })
 }
+// // 右边数据请求bottom数据
 export function getcategoryDeta(miniWallkey, type){
   return request({
     url:'/subcategory/detail',

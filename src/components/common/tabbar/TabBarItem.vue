@@ -19,6 +19,7 @@
     },
     computed: {
 			isActive() {
+        //  == -1 说明没找到
         // 颜色激活，$route.path的路径等于点击的路径相等就出现颜色，indexOf !==-1说明相等，激活颜色
 				return this.$route.path.indexOf(this.link) !== -1
       },
